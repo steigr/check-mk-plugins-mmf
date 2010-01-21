@@ -4,7 +4,7 @@ INSTALL = /usr/bin/install -m 0755 -D
 all:
 	@echo "Nothing to do"
 
-install: install-openafs_bosstatus install-openafs_fscache install-apt_updates
+install: install-openafs_bosstatus install-openafs_fscache install-apt_updates install-asterisk_stats
 
 install-openafs_bosstatus: install-check-openafs_bosstatus install-agent-openafs_bosstatus
 install-check-openafs_bosstatus:
