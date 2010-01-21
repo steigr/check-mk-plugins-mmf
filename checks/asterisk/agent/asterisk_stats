@@ -1,9 +1,16 @@
 #!/bin/bash
 
 echo "<<<asterisk_stats>>>"
-echo "sip peers $(asterisk -rx 'sip show peers' | grep "sip peers" | sed -e "s:\[Monitored\::monitored:" -e "s:Unmonitored\::unmonitored:" -e "s:\]$::")"
+echo "sip peers $(asterisk -rx 'sip show peers' | \
+                  grep "sip peers" | \
+                  sed -e "s:\[Monitored\::monitored:" \
+                      -e "s:Unmonitored\::unmonitored:" \
+                      -e "s:\]$::")"
 echo "sip users $(( $(asterisk -rx 'sip show users' | wc -l) - 1 ))"
 REGS="$(asterisk -rx 'sip show registry' | wc -l)"
-echo "sip registry $(asterisk -rx 'sip show registry' | tail -n$(($REGS - 1)) | head -n$(( $REGS - 2)) | sed -e "s:\s\+:\ :g" )"
+echo "sip registry $(asterisk -rx 'sip show registry' | \
+                     tail -n$(($REGS - 1)) | \
+                     head -n$(( $REGS - 2)) | \
+                     sed -e "s:\s\+:\ :g" )"
 echo "sip channels $(asterisk -rx 'sip show channels' | tail -n1)"
 echo "sip channelstats $(asterisk -rx 'sip show channelstats' | tail -n1)"
