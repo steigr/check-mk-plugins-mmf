@@ -1,0 +1,75 @@
+def inventory_asterisk_stats_sip_peers(checkname, info):
+	inventory = []
+	for line in info:
+		if ( line[0], line[1] ) == ( "sip", "peers" ):
+			inventory.append ( ( "SIP peers", "", None) )
+	return inventory
+
+def inventory_asterisk_stats_sip_users(checkname, info):
+	inventory = []
+	for line in info:
+		if ( line[0], line[1] ) == ( "sip", "users" ):
+			inventory.append ( ( "SIP users", "", None) )
+	return inventory
+
+def inventory_asterisk_stats_sip_channels(checkname, info):
+	inventory = []
+	for line in info:
+		if ( line[0], line[1] ) == ( "sip", "channels" ):
+			inventory.append ( ( "SIP active dialogs", "", None) )
+	return inventory
+
+def inventory_asterisk_stats_sip_channelstats(checkname, info):
+	inventory = []
+	for line in info:
+		if ( line[0], line[1] ) == ( "sip", "channelstats" ):
+			inventory.append ( ( "SIP active channels", "", None) )
+	return inventory
+
+# Output:
+# <<<asterisk_stats>>>
+# sip peers 3 sip peers monitored 1 online, 2 offline unmonitored 0 online, 0 offline
+# sip users 3
+# sip registry sipgate.de:5060 Y 1562140 105 Registered Thu, 21 Jan 2010 11:43:55
+# sip channels 1 active SIP dialog
+# sip channelstats 0 active SIP channels
+
+def check_asterisk_stats_sip_peers(item, params, info):
+	for line in info:
+		if ( line[0], line[1] ) == ( "sip", "peers" ):
+			overall_peers		= int(line[2])
+			online_monitored	= int(line[6])
+			offline_monitored	= int(line[8])
+			online_unmonitored	= int(line[11])
+			offline_unmonitored	= int(line[13])
+			if online_unmonitored + offline_unmonitored == 0:
+				return (0,"OK - %i all, %i online, %i offline" % ( overall_peers, online_monitored, offline_monitored ) )
+			else:
+				return (1,"WARNING - %i peers unmonitored"%(online_unmonitored + offline_unmonitored))
+
+def check_asterisk_stats_sip_users(item, params, info):
+	for line in info:
+		if ( line[0], line[1] ) == ( "sip", "users" ):
+			overall_users		= int(line[2])
+			if overall_users > 0:
+				return (0,"OK - %i users" % ( overall_users ) )
+			else:
+				return (1,"WARNING - %i users" % ( overall_users ) )
+
+def check_asterisk_stats_sip_channels(item, params, info):
+	for line in info:
+		if ( line[0], line[1] ) == ( "sip", "channels" ):
+			active_dialogs		= int(line[2])
+			return (0,"OK - %i active SIP dialogs" % ( active_dialogs ) )
+
+def check_asterisk_stats_sip_channelstats(item, params, info):
+	for line in info:
+		if ( line[0], line[1] ) == ( "sip", "channelstats" ):
+			active_channels		= int(line[2])
+			return (0,"OK - %i active SIP channels" % ( active_channels ) )
+
+check_info['asterisk_stats.sip_peers']		= (check_asterisk_stats_sip_peers, 	  "Asterisk" , 0 , inventory_asterisk_stats_sip_peers)
+check_info['asterisk_stats.sip_users']		= (check_asterisk_stats_sip_users, 	  "Asterisk" , 0 , inventory_asterisk_stats_sip_users)
+check_info['asterisk_stats.sip_channels']	= (check_asterisk_stats_sip_channels, 	  "Asterisk" , 0 , inventory_asterisk_stats_sip_channels)
+check_info['asterisk_stats.sip_channelstats']	= (check_asterisk_stats_sip_channelstats, "Asterisk" , 0 , inventory_asterisk_stats_sip_channelstats)
+
