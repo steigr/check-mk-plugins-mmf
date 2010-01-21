@@ -1,0 +1,8 @@
+#!/bin/bash
+
+CHECK=/usr/lib/nagios/plugins/check_apt
+
+echo "<<<apt_updates>>>"
+[ -f "$CHECK" ] || exit 0
+$CHECK -t 60
+

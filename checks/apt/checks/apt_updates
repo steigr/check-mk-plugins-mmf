@@ -1,0 +1,35 @@
+def inventory_apt_updates_updates(checkname, info):
+	inventory = []
+	for line in info:
+		try:
+			if line[0] == 'APT':
+				inventory.append ( ( "updates", "", None) )
+		except IndexError:
+			pass
+	return inventory
+
+def check_apt_updates_updates(item, params, info):
+	for line in info:
+		try:
+			if line[1]   == 'OK:':
+				updates=int(line[2])
+				secupdates=int(line[7][1:])
+				theret=0
+				return(theret,"OK - no updates", [ ("updates", updates),("security-updates",secupdates)])
+			elif line[1] == 'WARNING:':
+				updates=int(line[2])
+				secupdates=int(line[7][1:])
+				theret=1
+				return(theret,"WARNING - %s updates" % updates, [ ("updates", updates),("security-updates",secupdates)])
+			elif line[1] == 'CRITICAL:':
+				updates=int(line[2])
+				secupdates=int(line[7][1:])
+				theret=2
+				return(theret,"CRITICAL - %s security-updates ( %s updates)"%(secupdates,updates), [ ("updates", updates),("security-updates",secupdates)])
+			else:
+				return( 3,line)
+		except IndexError:
+			pass
+
+check_info['apt_updates.updates'] = \
+	(check_apt_updates_updates, "APT" , 1 , inventory_apt_updates_updates)

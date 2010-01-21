@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "<<<asterisk_stats>>>"
+asterisk -rx 'sip show peers' | grep "sip peers"
+echo "sip users $(( $(asterisk -rx 'sip show users' | wc -l) - 1 ))
+REGS="$(asterisk -rx 'sip show registry' | wc -l)"
+asterisk -rx 'sip show registry' | tail -n$(($REGS - 1)) | head -n$(( $REGS - 2))
+asterisk -rx 'sip show channels' | tail -n1
+asterisk -rx 'sip show channelstats' | tail -n1

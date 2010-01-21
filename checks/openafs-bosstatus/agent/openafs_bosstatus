@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "<<<openafs_bosstatus>>>"
+bos status localhost | sed -e "s:^\s*::g" | grep "^Instance" | cut -f2- -d" "

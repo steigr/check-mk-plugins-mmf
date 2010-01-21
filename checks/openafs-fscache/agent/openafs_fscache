@@ -1,0 +1,12 @@
+#!/bin/sh
+echo "<<<openafs_fscache>>>"
+fs getcacheparms -excessive | \
+  sed -e "s:^\s*::g" -e "s:\s\+:\ :g" | \
+  grep -e "cache blocks" \
+       -e "cache files" \
+       -e "0k- 4K" \
+       -e "4k- 16k" \
+       -e "16k- 64k" \
+       -e "64k- 256k" \
+       -e "256k- 1M" \
+       -e ">=1M"

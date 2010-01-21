@@ -1,0 +1,45 @@
+def inventory_openafs_fscache_size(checkname, info):
+	inventory = []
+	for line in info:
+		try:
+			if (line[0],line[1],line[3],line[4],line[5]) == ('AFS','using','of','cache','blocks'):
+				inventory.append ( ( "size", "", None) )
+		except IndexError:
+			pass
+	return inventory
+
+def inventory_openafs_fscache_files(checkname, info):
+	inventory = []
+	for line in info:
+		try:
+			if (line[1],line[2],line[3],line[4]) == ("of","the","cache","files"):
+				inventory.append ( ( "files", "", None) )
+		except IndexError:
+			pass
+	return inventory
+
+def check_openafs_fscache_size(item, params, info):
+	for line in info:
+		try:
+			if (line[0],line[1],line[3],line[4],line[5]) == ('AFS','using','of','cache','blocks'):
+				size_usage = int(line[2][0:2])
+				return (0,"OK - %s used" % line[2], [
+					 ( "used", int(line[6][1:]), "", "", 0, line[8] ),
+				])
+		except IndexError:
+			pass
+
+def check_openafs_fscache_files(item, params, info):
+	for line in info:
+		try:
+			if (line[1],line[2],line[3],line[4]) == ("of","the","cache","files"):
+				return (0,"OK - %s used" % line[0], [
+					 ( "allfiles", int(line[5][1:]), "", "", 0, line[7] ),
+				])
+		except IndexError:
+			pass
+
+check_info['openafs_fscache.size'] = \
+	(check_openafs_fscache_size, "OpenAFS: Space-usage of Filesystem-Cache" , 1 , inventory_openafs_fscache_size)
+check_info['openafs_fscache.files'] = \
+	(check_openafs_fscache_files, "OpenAFS: Files-usage of Filesystem-Cache" , 1 , inventory_openafs_fscache_files)

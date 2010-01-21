@@ -1,0 +1,51 @@
+def inventory_openafs_bosstatus_fs(checkname, info):
+	inventory = []
+	for line in info:
+		if line[0] == "fs,":
+			inventory.append ( ( "fs", "", None) )
+	return inventory
+
+def inventory_openafs_bosstatus_vl(checkname, info):
+	inventory = []
+	for line in info:
+		if line[0] == "vlserver,":
+			inventory.append ( ( "vlserver", "", None) )
+	return inventory
+
+def inventory_openafs_bosstatus_pts(checkname, info):
+	inventory = []
+	for line in info:
+		if line[0] == "ptserver,":
+			inventory.append ( ( "ptserver", "", None) )
+	return inventory
+
+def check_openafs_bosstatus_fs(item, params, info):
+	for line in info:
+		if line[0] == "fs,":
+			if line[3] == "normally.":
+				return (0,"OK - %s %s %s" % ( line[1], line[2], line[3]) )
+			else:
+				return (2,"CRITICAL - Fileserver not working properly")
+
+def check_openafs_bosstatus_vl(item, params, info):
+	for line in info:
+		if line[0] == "vlserver,":
+			if line[3] == "normally.":
+				return (0,"OK - %s %s %s" % ( line[1], line[2], line[3]) )
+			else:
+				return (2,"CRITICAL - Vlserver not working properly")
+
+def check_openafs_bosstatus_pts(item, params, info):
+	for line in info:
+		if line[0] == "ptserver,":
+			if line[3] == "normally.":
+				return (0,"OK - %s %s %s" % ( line[1], line[2], line[3]) )
+			else:
+				return (2,"CRITICAL - Protectionserver not working properly")
+
+check_info['openafs_bosstatus.fs'] = \
+	(check_openafs_bosstatus_fs, "OpenAFS: Fileserver Instance" , 0 , inventory_openafs_bosstatus_fs)
+check_info['openafs_bosstatus.vl'] = \
+	(check_openafs_bosstatus_vl, "OpenAFS: Volumeserver Instance" , 0 , inventory_openafs_bosstatus_vl)
+check_info['openafs_bosstatus.pts'] = \
+	(check_openafs_bosstatus_pts, "OpenAFS: Protectionserver Instance" , 0 , inventory_openafs_bosstatus_pts)
