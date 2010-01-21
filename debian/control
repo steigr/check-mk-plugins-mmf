@@ -25,9 +25,17 @@ Description: Check_mk Agent-Script for APT-Updates
  This script reuses check-apt from nagios-plugins-basic to retrieve the number
  of pending software and security-updates.
 
+Package: check-mk-plugins-mmf-agent-asterisk-stats
+Architecture: all
+Depends: check-mk-agent
+Description: Check_mk Agent-Script for Asterisk-Stats
+ This script polls statistics out of asterisk.
+ .
+ Currently only SIP-stats available.
+
 Package: check-mk-plugins-mmf-checks
 Architecture: all
-Depends: check-mk-plugins-mmf-checks-openafs-bosstatus, check-mk-plugins-mmf-checks-openafs-fscache, check-mk-plugins-mmf-checks-apt-updates
+Depends: check-mk-plugins-mmf-checks-openafs-bosstatus, check-mk-plugins-mmf-checks-openafs-fscache, check-mk-plugins-mmf-checks-apt-updates, check-mk-plugins-mmf-checks-asterisk-stats
 Description: Metapackage for all mmf-check_mk-checks
  install all mmf-check_mk-checks
 
@@ -52,4 +60,11 @@ Description: check_mk-Result-Script for APT-information
  This package contains the evaluation and filter-script for check_mk to
  process the list of available software and security-updates on remote
  Debian and Debian-like systems.
+
+Package: check-mk-plugins-mmf-checks-asterisk-stats
+Architecture: all
+Suggests: nagios3
+Description: check_mk-Result-Script for Asterisk-stats-information
+ This package contains the evaluation and filter-script for check_mk to
+ process some statistics from asterisk.
 

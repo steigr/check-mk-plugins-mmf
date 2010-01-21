@@ -23,3 +23,9 @@ install-check-apt_updates:
 	@$(INSTALL) checks/apt/checks/apt_updates $(DESTDIR)/usr/share/check_mk/checks/apt_updates
 install-agent-apt_updates:
 	@$(INSTALL) checks/apt/agent/checkmk_apt  $(DESTDIR)/usr/lib/check_mk_agent/plugins/checkmk_apt
+
+install-asterisk_stats: install-check-asterisk_stats install-agent-asterisk_stats
+install-check-asterisk_stats:
+	@$(INSTALL) checks/asterisk/checks/asterisk_stats $(DESTDIR)/usr/share/check_mk/checks/asterisk_stats
+install-agent-asterisk_stats:
+	@$(INSTALL) checks/asterisk/agent/asterisk_stats  $(DESTDIR)/usr/lib/check_mk_agent/plugins/asterisk_stats
