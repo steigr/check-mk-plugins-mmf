@@ -1,7 +1,0 @@
-check-mk-plugins-mmf-agent-openafs-bosstatus_0.1-1.1_all.deb net extra
-check-mk-plugins-mmf-agent-openafs-fscache_0.1-1.1_all.deb net extra
-check-mk-plugins-mmf-agent-apt-updates_0.1-1.1_all.deb net extra
-check-mk-plugins-mmf-checks_0.1-1.1_all.deb net extra
-check-mk-plugins-mmf-checks-openafs-bosstatus_0.1-1.1_all.deb net extra
-check-mk-plugins-mmf-checks-openafs-fscache_0.1-1.1_all.deb net extra
-check-mk-plugins-mmf-checks-apt-updates_0.1-1.1_all.deb net extra
