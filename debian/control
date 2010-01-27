@@ -8,13 +8,13 @@ Homepage: https://users.mmforces.de/~mathias.kaufmann/check_mk
 
 Package: check-mk-plugins-mmf-agent-openafs-bosstatus
 Architecture: all
-Depends: check-mk-agent, openafs-client
+Depends: check-mk-agent, openafs-client (>=1.4.11)
 Description: Check_mk Agent-Script for OpenAFS BOS-status
  checks the status of the bo-server of OpenAFS
 
 Package: check-mk-plugins-mmf-agent-openafs-fscache
 Architecture: all
-Depends: check-mk-agent, openafs-client
+Depends: check-mk-agent, openafs-client (>=1.4.11)
 Description: Check_mk Agent-Script for OpenAFS-FS
  checks the status of the filecache of an OpenAFS-client
 
