@@ -2,7 +2,7 @@ def inventory_openafs_fscache_size(checkname, info):
 	inventory = []
 	for line in info:
 		try:
-			if (line[0],line[1],line[3],line[4],line[5]) == ('AFS','using','of','cache','blocks'):
+			if (line[0],line[2],line[4]) == ('used','blocks','of'):
 				inventory.append ( ( "size", "", None) )
 		except IndexError:
 			pass
@@ -21,10 +21,12 @@ def inventory_openafs_fscache_files(checkname, info):
 def check_openafs_fscache_size(item, params, info):
 	for line in info:
 		try:
-			if (line[0],line[1],line[3],line[4],line[5]) == ('AFS','using','of','cache','blocks'):
-				size_usage = int(line[2][0:2])
-				return (0,"OK - %s used" % line[2], [
-					 ( "used", int(line[6][1:]), "", "", 0, line[8] ),
+			if (line[0],line[2],line[4]) == ('used','blocks','of'):
+				size_used = float(line[3])
+				size_max  = float(line[5])
+				size_usage = str(round(size_used/size_max,2))
+				return (0,"OK - %s%% used" % size_usage, [
+					 ( "used", int(line[3][1:]), "", "", 0, line[5] ),
 				])
 		except IndexError:
 			pass

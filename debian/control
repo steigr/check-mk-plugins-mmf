@@ -1,31 +1,31 @@
-Source: check-mk-plugins-mmf
+Source: check-mk-plugins
 Section: net
 Priority: extra
 Maintainer: Mathias Kaufmann <mathias.kaufmann@mmforces.de>
 Build-Depends: debhelper (>= 7)
 Standards-Version: 3.8.3
-Homepage: https://users.mmforces.de/~mathias.kaufmann/check_mk
+Homepage: http://github.com/mmforces/check-mk-plugins.git
 
-Package: check-mk-plugins-mmf-agent-openafs-bosstatus
+Package: check-mk-agent-openafs-bosstatus
 Architecture: all
-Depends: check-mk-agent, openafs-client (>=1.4.11)
+Depends: check-mk-agent, openafs-client
 Description: Check_mk Agent-Script for OpenAFS BOS-status
  checks the status of the bo-server of OpenAFS
 
-Package: check-mk-plugins-mmf-agent-openafs-fscache
+Package: check-mk-agent-openafs-fscache
 Architecture: all
-Depends: check-mk-agent, openafs-client (>=1.4.11)
+Depends: check-mk-agent, openafs-client
 Description: Check_mk Agent-Script for OpenAFS-FS
  checks the status of the filecache of an OpenAFS-client
 
-Package: check-mk-plugins-mmf-agent-apt-updates
+Package: check-mk-agent-apt-updates
 Architecture: all
 Depends: check-mk-agent, nagios-plugins-basic
 Description: Check_mk Agent-Script for APT-Updates
  This script reuses check-apt from nagios-plugins-basic to retrieve the number
  of pending software and security-updates.
 
-Package: check-mk-plugins-mmf-agent-asterisk-stats
+Package: check-mk-agent-asterisk-stats
 Architecture: all
 Depends: check-mk-agent
 Description: Check_mk Agent-Script for Asterisk-Stats
@@ -33,37 +33,37 @@ Description: Check_mk Agent-Script for Asterisk-Stats
  .
  Currently only SIP-stats available.
 
-Package: check-mk-plugins-mmf-checks
+Package: check-mk-checks-mmforces
 Architecture: all
-Depends: check-mk-plugins-mmf-checks-openafs-bosstatus, check-mk-plugins-mmf-checks-openafs-fscache, check-mk-plugins-mmf-checks-apt-updates, check-mk-plugins-mmf-checks-asterisk-stats
-Description: Metapackage for all mmf-check_mk-checks
+Depends: check-mk-check-openafs-bosstatus, check-mk-check-openafs-fscache, check-mk-check-apt-updates, check-mk-check-asterisk-stats
+Description: Metapackage for all mmf-check for check-mk
  install all mmf-check_mk-checks
 
-Package: check-mk-plugins-mmf-checks-openafs-bosstatus
+Package: check-mk-check-openafs-bosstatus
 Architecture: all
-Suggests: nagios3
+Suggests: nagios3-core, icinga-core
 Description: check_mk-Result-Script for OpenAFS BOS-status
  This package contains the evaluation and filter-script for check_mk to
  process OpenAFS BOS-status-information on remote OpenAFS-servers.
 
-Package: check-mk-plugins-mmf-checks-openafs-fscache
+Package: check-mk-check-openafs-fscache
 Architecture: all
-Suggests: nagios3
+Suggests: nagios3-core, icinga-core
 Description: check_mk-Result-Script for OpenAFS filecache-information
  This package contains the evaluation and filter-script for check_mk to
  process the OpenAFS client-filecache-information on remote OpenAFS-machines.
 
-Package: check-mk-plugins-mmf-checks-apt-updates
+Package: check-mk-check-apt-updates
 Architecture: all
-Suggests: nagios3
+Suggests: nagios3-core,icinga-core
 Description: check_mk-Result-Script for APT-information
  This package contains the evaluation and filter-script for check_mk to
  process the list of available software and security-updates on remote
  Debian and Debian-like systems.
 
-Package: check-mk-plugins-mmf-checks-asterisk-stats
+Package: check-mk-check-asterisk-stats
 Architecture: all
-Suggests: nagios3
+Suggests: nagios3-core, icinga-core
 Description: check_mk-Result-Script for Asterisk-stats-information
  This package contains the evaluation and filter-script for check_mk to
  process some statistics from asterisk.
