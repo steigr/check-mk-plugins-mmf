@@ -21,6 +21,7 @@ Description: Check_mk Agent-Script for OpenAFS-FS
 Package: check-mk-agent-apt-updates
 Architecture: all
 Depends: check-mk-agent, nagios-plugins-basic
+Recommends: cron-apt
 Description: Check_mk Agent-Script for APT-Updates
  This script reuses check-apt from nagios-plugins-basic to retrieve the number
  of pending software and security-updates.
