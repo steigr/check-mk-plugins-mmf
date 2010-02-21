@@ -20,7 +20,7 @@ set -e
 
 case "$1" in
     configure)
-	CHECKNAMES="apt_updates.updates"
+	CHECKNAMES="openafs_bosstatus.pts openafs_bosstatus.vl openafs_bosstatus.fs"
 	for CHECKNAME in $CHECKNAMES; do
 		echo "inventory $CHECKNAME"
 		check_mk -I $CHECKNAME

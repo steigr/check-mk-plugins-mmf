@@ -20,7 +20,7 @@ set -e
 
 case "$1" in
     configure)
-	CHECKNAMES="apt_updates.updates"
+	CHECKNAMES="asterisk_stats.sip_channels asterisk_stats.sip_channelstats asterisk_stats.sip_peers asterisk_stats.sip_users"
 	for CHECKNAME in $CHECKNAMES; do
 		echo "inventory $CHECKNAME"
 		check_mk -I $CHECKNAME

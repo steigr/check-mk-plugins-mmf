@@ -19,7 +19,7 @@ set -e
 
 case "$1" in
     remove|upgrade|deconfigure)
-	CHECKNAMES="apt_updates.updates"
+	CHECKNAMES="openafs_bosstatus.fs openafs_bosstatus.pts openafs_bosstatus.vl"
 	CHECKMKCONFIG="/usr/share/check_mk/modules/defaults"
 	if [ -f $CHECKMKCONFIG ]; then
 		AUTOCHECKSDIR=$(grep autochecksdir $CHECKMKCONFIG)
