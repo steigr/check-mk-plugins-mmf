@@ -1,13 +1,8 @@
-check-mk-plugins (0.2-2) unstable; urgency=low
-
-  * Removed APT-Package-Update, should be done by something other (cron-apt)
-
- -- Mathias Kaufmann <steiger@mmforces.de>  Sun, 21 Feb 2010 09:56:52 +0100
-
 check-mk-plugins (0.2-1) unstable; urgency=low
 
   * Fixed OpenAFS-FSCache-Check
   * Fixed naming
+  * Removed APT-Package-Update, should be done by something other (cron-apt)
 
  -- Mathias Kaufmann <steiger@mmforces.de>  Tue, 02 Feb 2010 10:26:37 +0100
 
