@@ -1,4 +1,4 @@
-check-mk-plugins (0.2-1.1) unstable; urgency=low
+check-mk-plugins (0.2-2.1) unstable; urgency=low
 
   * Added cron-apt as recommendation for check-apt
 
