@@ -84,8 +84,8 @@ def check_asterisk_stats_sip_calls(item, params, info):
                         overall_calls		= int(line[2])
                         return (0,"OK - %i simultaneous calls" % ( overall_calls ), [("active_calls", overall_calls)] )
 
-check_info['asterisk_stats.sip_peers']		= (check_asterisk_stats_sip_peers, 	  "Asterisk" , 0 , inventory_asterisk_stats_sip_peers)
-check_info['asterisk_stats.sip_users']		= (check_asterisk_stats_sip_users, 	  "Asterisk" , 0 , inventory_asterisk_stats_sip_users)
-check_info['asterisk_stats.sip_channels']	= (check_asterisk_stats_sip_channels, 	  "Asterisk" , 0 , inventory_asterisk_stats_sip_channels)
-check_info['asterisk_stats.sip_channelstats']	= (check_asterisk_stats_sip_channelstats, "Asterisk" , 0 , inventory_asterisk_stats_sip_channelstats)
-check_info['asterisk_stats.sip_calls']		= (check_asterisk_stats_sip_calls, 	  "Asterisk" , 0 , inventory_asterisk_stats_sip_calls)
+check_info['asterisk_stats.sip_peers']		= (check_asterisk_stats_sip_peers, 	  "Asterisk" , 1 , inventory_asterisk_stats_sip_peers)
+check_info['asterisk_stats.sip_users']		= (check_asterisk_stats_sip_users, 	  "Asterisk" , 1 , inventory_asterisk_stats_sip_users)
+check_info['asterisk_stats.sip_channels']	= (check_asterisk_stats_sip_channels, 	  "Asterisk" , 1 , inventory_asterisk_stats_sip_channels)
+check_info['asterisk_stats.sip_channelstats']	= (check_asterisk_stats_sip_channelstats, "Asterisk" , 1 , inventory_asterisk_stats_sip_channelstats)
+check_info['asterisk_stats.sip_calls']		= (check_asterisk_stats_sip_calls, 	  "Asterisk" , 1 , inventory_asterisk_stats_sip_calls)
