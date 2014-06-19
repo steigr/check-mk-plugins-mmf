@@ -15,3 +15,9 @@ echo "sip registry $(asterisk -rx 'sip show registry' | \
 echo "sip channels $(asterisk -rx 'sip show channels' | tail -n1)"
 echo "sip channelstats $(asterisk -rx 'sip show channelstats' | tail -n1)"
 echo "sip calls $(asterisk -rx 'core show calls' | grep active\ call | cut -d' ' -f1)"
+echo "iax2 peers $(asterisk -rx 'iax2 show peers' | \
+                  grep "iax2 peers" | \
+                  sed -e "s:\[Monitored\::monitored:" \
+                      -e "s:Unmonitored\::unmonitored:" \
+                      -e "s: \[: :" \
+                      -e "s:\]$::")"
