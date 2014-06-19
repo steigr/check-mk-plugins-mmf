@@ -5,6 +5,13 @@ def inventory_asterisk_stats_sip_peers(checkname, info):
 			inventory.append ( ( "SIP peers", "", None) )
 	return inventory
 
+def inventory_asterisk_stats_iax2_peers(checkname, info):
+        inventory = []
+        for line in info:
+                if ( line[0], line[1] ) == ( "iax2", "peers" ):
+                        inventory.append ( ( "IAX2 peers", "", None) )
+        return inventory
+
 def inventory_asterisk_stats_sip_users(checkname, info):
 	inventory = []
 	for line in info:
@@ -51,11 +58,21 @@ def check_asterisk_stats_sip_peers(item, params, info):
 			online_unmonitored	= int(line[11])
 			offline_unmonitored	= int(line[13])
 			if offline_monitored > 0:
-				return (2,"CRITICAL - %i peer(s) are offline" % (offline_monitored))
-			if online_unmonitored + offline_unmonitored == 0:
-				return (0,"OK - %i all, %i online, %i offline" % ( overall_peers, online_monitored, offline_monitored ), [("online_monitored", online_monitored), ("offline_monitored", offline_monitored)])
+				return (2,"%i peer(s) are offline" % (offline_monitored))
 			else:
-				return (1,"WARNING - %i peers unmonitored"%(online_unmonitored + offline_unmonitored))
+				return (0,"OK - %i all, %i online, %i offline" % ( overall_peers, online_monitored, offline_monitored ), [("online_monitored", online_monitored), ("offline_monitored", offline_monitored)])
+
+def check_asterisk_stats_iax2_peers(item, params, info):
+        for line in info:
+                if ( line[0], line[1] ) == ( "iax2", "peers" ):
+                        overall_peers           = int(line[2])
+                        online_monitored        = int(line[5])
+                        offline_monitored       = int(line[7])
+                        unmonitored       = int(line[9])
+                        if offline_monitored > 0:
+                                return (2,"%i peer(s) are offline" % (offline_monitored))
+                        else:
+                                return (0,"OK - %i all, %i online, %i offline" % ( overall_peers, online_monitored, offline_monitored ), [("online_monitored", online_monitored), ("offline_monitored", offline_monitored)])
 
 def check_asterisk_stats_sip_users(item, params, info):
 	for line in info:
@@ -64,7 +81,7 @@ def check_asterisk_stats_sip_users(item, params, info):
 			if overall_users > 0:
 				return (0,"OK - %i users" % ( overall_users ), [('sip_users', overall_users)] )
 			else:
-				return (1,"WARNING - %i users" % ( overall_users ), [('sip_users', overall_users)] )
+				return (1,"%i users" % ( overall_users ), [('sip_users', overall_users)] )
 
 def check_asterisk_stats_sip_channels(item, params, info):
 	for line in info:
@@ -89,3 +106,4 @@ check_info['asterisk_stats.sip_users']		= (check_asterisk_stats_sip_users, 	  "A
 check_info['asterisk_stats.sip_channels']	= (check_asterisk_stats_sip_channels, 	  "Asterisk" , 1 , inventory_asterisk_stats_sip_channels)
 check_info['asterisk_stats.sip_channelstats']	= (check_asterisk_stats_sip_channelstats, "Asterisk" , 1 , inventory_asterisk_stats_sip_channelstats)
 check_info['asterisk_stats.sip_calls']		= (check_asterisk_stats_sip_calls, 	  "Asterisk" , 1 , inventory_asterisk_stats_sip_calls)
+check_info['asterisk_stats.iax2_peers']		= (check_asterisk_stats_iax2_peers, 	  "Asterisk" , 1 , inventory_asterisk_stats_iax2_peers)
