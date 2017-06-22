@@ -2,6 +2,9 @@ factory_settings["asterisk_peers_default_params"] = {
     "crit_if_offline_peers" : False,
 }
 
+def format_sip_trunk_name(line):
+	return "SIP trunk %s@%s"%(line[4],line[2])
+
 def inventory_asterisk_stats_sip_peers(checkname, info):
 	for line in info:
 		if ( line[0], line[1] ) == ( "sip", "peers" ):
@@ -17,8 +20,7 @@ def inventory_asterisk_stats_sip_users(checkname, info):
 def inventory_asterisk_stats_sip_trunks(checkname, info):
 	for line in info:
 		if ( line[0], line[1] ) == ( "sip", "registry" ):
-			trunk_name = "SIP trunk %s@%s"%(line[4],line[2])
-			yield trunk_name, None
+			yield format_sip_trunk_name(line), {}
 
 def inventory_asterisk_stats_sip_channels(checkname, info):
 	inventory = []
@@ -77,11 +79,13 @@ def check_asterisk_stats_sip_users(item, params, info):
 def check_asterisk_stats_sip_trunks(item, params, info):
 	for line in info:
 		if ( line[0], line[1] ) == ( "sip", "registry" ):
+			trunk_name			= format_sip_trunk_name(line)
 			trunk_status		= line[6]
-			if trunk_status == "Registered":
-				return 0, "Registered"
-			else:
-				return 2, "%s"%(trunk_status)
+			if trunk_name == item:
+				if trunk_status == "Registered":
+					return 0, "Registered"
+				else:
+					return 2, "%s"%(trunk_status)
 
 def check_asterisk_stats_sip_channels(item, params, info):
 	for line in info:
