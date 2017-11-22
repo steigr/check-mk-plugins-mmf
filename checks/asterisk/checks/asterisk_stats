@@ -85,7 +85,7 @@ def check_asterisk_stats_sip_trunks(item, params, info):
 				if trunk_status == "Registered":
 					return 0, "Registered"
 				else:
-					return 2, "%s"%(trunk_status)
+					return 2, "%s" % ' '.join(line[6:len(line)])
 
 def check_asterisk_stats_sip_channels(item, params, info):
 	for line in info:
