@@ -1,9 +1,14 @@
+factory_settings["asterisk_peers_default_params"] = {
+    "crit_if_offline_peers" : False,
+}
+
+def format_sip_trunk_name(line):
+	return "SIP trunk %s@%s"%(line[4],line[2])
+
 def inventory_asterisk_stats_sip_peers(checkname, info):
-	inventory = []
 	for line in info:
 		if ( line[0], line[1] ) == ( "sip", "peers" ):
-			inventory.append ( ( "SIP peers", "", None) )
-	return inventory
+			yield "SIP peers", {}
 
 def inventory_asterisk_stats_sip_users(checkname, info):
 	inventory = []
@@ -11,6 +16,11 @@ def inventory_asterisk_stats_sip_users(checkname, info):
 		if ( line[0], line[1] ) == ( "sip", "users" ):
 			inventory.append ( ( "SIP users", "", None) )
 	return inventory
+
+def inventory_asterisk_stats_sip_trunks(checkname, info):
+	for line in info:
+		if ( line[0], line[1] ) == ( "sip", "registry" ):
+			yield format_sip_trunk_name(line), {}
 
 def inventory_asterisk_stats_sip_channels(checkname, info):
 	inventory = []
@@ -50,7 +60,7 @@ def check_asterisk_stats_sip_peers(item, params, info):
 			offline_monitored	= int(line[8])
 			online_unmonitored	= int(line[11])
 			offline_unmonitored	= int(line[13])
-			if offline_monitored > 0:
+			if offline_monitored > 0 and params["crit_if_offline_peers"]:
 				return (2,"CRITICAL - %i peer(s) are offline" % (offline_monitored))
 			if online_unmonitored + offline_unmonitored == 0:
 				return (0,"OK - %i all, %i online, %i offline" % ( overall_peers, online_monitored, offline_monitored ), [("online_monitored", online_monitored), ("offline_monitored", offline_monitored)])
@@ -65,6 +75,17 @@ def check_asterisk_stats_sip_users(item, params, info):
 				return (0,"OK - %i users" % ( overall_users ), [('sip_users', overall_users)] )
 			else:
 				return (1,"WARNING - %i users" % ( overall_users ), [('sip_users', overall_users)] )
+
+def check_asterisk_stats_sip_trunks(item, params, info):
+	for line in info:
+		if ( line[0], line[1] ) == ( "sip", "registry" ):
+			trunk_name			= format_sip_trunk_name(line)
+			trunk_status		= line[6]
+			if trunk_name == item:
+				if trunk_status == "Registered":
+					return 0, "Registered"
+				else:
+					return 2, "%s" % ' '.join(line[6:])
 
 def check_asterisk_stats_sip_channels(item, params, info):
 	for line in info:
@@ -84,8 +105,21 @@ def check_asterisk_stats_sip_calls(item, params, info):
                         overall_calls		= int(line[2])
                         return (0,"OK - %i simultaneous calls" % ( overall_calls ), [("active_calls", overall_calls)] )
 
-check_info['asterisk_stats.sip_peers']		= (check_asterisk_stats_sip_peers, 	  "Asterisk" , 1 , inventory_asterisk_stats_sip_peers)
+check_info['asterisk_stats.sip_peers']		= {
+	"check_function"          : check_asterisk_stats_sip_peers,
+    "inventory_function"      : inventory_asterisk_stats_sip_peers,
+    "service_description"     : "Asterisk %s",
+    "has_perfdata"            : True,
+    "default_levels_variable" : "asterisk_peers_default_params",
+    "group"                   : "asterisk_sip_peers",
+}
 check_info['asterisk_stats.sip_users']		= (check_asterisk_stats_sip_users, 	  "Asterisk" , 1 , inventory_asterisk_stats_sip_users)
 check_info['asterisk_stats.sip_channels']	= (check_asterisk_stats_sip_channels, 	  "Asterisk" , 1 , inventory_asterisk_stats_sip_channels)
 check_info['asterisk_stats.sip_channelstats']	= (check_asterisk_stats_sip_channelstats, "Asterisk" , 1 , inventory_asterisk_stats_sip_channelstats)
 check_info['asterisk_stats.sip_calls']		= (check_asterisk_stats_sip_calls, 	  "Asterisk" , 1 , inventory_asterisk_stats_sip_calls)
+check_info['asterisk_stats.sip_trunk']		= {
+	"check_function"          : check_asterisk_stats_sip_trunks,
+    "inventory_function"      : inventory_asterisk_stats_sip_trunks,
+    "service_description"     : "Asterisk %s",
+    "has_perfdata"            : False,
+}
